@@ -49,9 +49,9 @@ int ioSetDir(unsigned int gpio, string dirStatus)
     int fd;
     char buf[64];
 
-    snprintf(buf, sizeof(buf), 
+    snprintf(buf, sizeof(buf),
         "/sys/class/gpio/gpio%d/direction", gpio);
-    
+
     fd = open(buf, O_WRONLY);
     if (fd < 0) {
         perror("gpio/direction");
@@ -62,7 +62,7 @@ int ioSetDir(unsigned int gpio, string dirStatus)
         write(fd, "out", 4);
     else
         write(fd, "in", 3);
-    
+
     close(fd);
     return 0;
 }
@@ -72,9 +72,9 @@ int ioSetValue(unsigned int gpio, int value)
     int fd;
     char buf[64];
 
-    snprintf(buf, sizeof(buf), 
+    snprintf(buf, sizeof(buf),
         "/sys/class/gpio/gpio%d/value", gpio);
-    
+
     fd = open(buf, O_WRONLY);
     if (fd < 0) {
         perror("gpio/set-value");
@@ -85,7 +85,7 @@ int ioSetValue(unsigned int gpio, int value)
         write(fd, "0", 2);
     else
         write(fd, "1", 2);
-    
+
     close(fd);
     return 0;
 }
@@ -94,7 +94,7 @@ int main(int argc, char* argv[])
 {
     int num = 0, gpios[] = {160, 161, 162, 163};
     string arg1, arg2;
-    
+
     cout << "初始化中..." << endl;
     for (int i = 0; i < 4; i++) {
         ioExport(gpios[i]);
@@ -113,18 +113,19 @@ int main(int argc, char* argv[])
         arg2.assign(argv[2]);
 
         if (arg1 == "Mode_Shine") {
-            for (int i = 0; i < int(arg2); i++) {
+            for (int i = 0; i < stoi(arg2); i++) {
                 cout << "LED1, LED2 亮" << endl;
                 ioSetValue(gpios[0], 0);
                 ioSetValue(gpios[1], 0);
-                ioSetValue(gpios[1], 1);
                 ioSetValue(gpios[2], 1);
+                ioSetValue(gpios[3], 1);
                 sleep(1);
                 cout << "LED3, LED4 亮" << endl;
                 ioSetValue(gpios[0], 1);
                 ioSetValue(gpios[1], 1);
-                ioSetValue(gpios[1], 0);
                 ioSetValue(gpios[2], 0);
+                ioSetValue(gpios[3], 0);
+                sleep(1);
             }
         }
         else {
@@ -143,8 +144,6 @@ int main(int argc, char* argv[])
 
     cout << "正在結束程式..." << endl;
     for (int i = 0; i < 4; i++) {
-        ioExport(gpios[i]);
-        ioSetDir(gpios[i], "out");
         ioSetValue(gpios[i], 1);
     }
     sleep(1);
@@ -152,7 +151,7 @@ int main(int argc, char* argv[])
         ioSetValue(gpios[i], 0);
         ioUnexport(gpios[i]);
     }
-    
+
 
     return 0;
 }
