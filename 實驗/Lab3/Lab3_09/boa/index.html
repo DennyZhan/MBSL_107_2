@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Lab3</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+</head>
+<body>
+    <form action="/cgi-bin/SubmitData.cgi">
+        <h1>選擇傳送資料</h1>
+
+        <h3>資料類型</h3>
+        <label for="name">姓名: </label>
+        <input id="name" type="radio" name="date-type" value="name">
+
+        <label for="number">學號: </label>
+        <input id="number" type="radio" name="date-type" value="number" checked>
+        <br>
+
+        <h3>內容</h3>
+        <label for="data">輸入內容: </label>
+        <input id="data" type="text"  name="data" value="106590034">
+        <br>
+
+        <input type="submit" name="submit" value="submit">
+    </form>
+    <form action="/cgi-bin/SetLedValue.cgi">
+        <h1>控制LED燈亮滅</h1>
+
+        <h3>LED1</h3>
+        <label for="led1-on">亮: </label>
+        <input id="led1-on" type="radio" name="led1" value="on"  checked>
+        <label for="led1-off">滅: </label>
+        <input id="led1-off" type="radio" name="led1" value="off">
+        <br>
+        
+        <h3>LED2</h3>
+        <label for="led2-on">亮: </label>
+        <input id="led2-on" type="radio" name="led2" value="on"  checked>
+        <label for="led2-off">滅: </label>
+        <input id="led2-off" type="radio" name="led2" value="off">
+        <br>
+
+        <h3>LED3</h3>
+        <label for="led3-on">亮: </label>
+        <input id="led3-on" type="radio" name="led3" value="on"  checked>
+        <label for="led3-off">滅: </label>
+        <input id="led3-off" type="radio" name="led3" value="off">
+        <br>
+
+        <h3>LED4</h3>
+        <label for="led4-on">亮: </label>
+        <input id="led4-on" type="radio" name="led4" value="on"  checked>
+        <label for="led4-off">滅: </label>
+        <input id="led4-off" type="radio" name="led4" value="off">
+        <br>
+
+        <input type="submit" name="submit" value="submit">
+    </form>
+    <form action="/cgi-bin/LedShine.cgi">
+        <h1>控制LED閃爍</h1>
+
+        <label for="times">閃爍次數: </label>
+        <input type="number" name="times" min="0" max="50" value="5">
+        <br>
+    
+        <input type="submit" name="submit" value="submit">
+    </form>
+</body>
+</html>
