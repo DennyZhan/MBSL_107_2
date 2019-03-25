@@ -37,26 +37,19 @@ vector<string> getValues(string data)
 
 int main()
 {
-	const int leds[4] = { 190, 191, 192, 193 };
-	string input, ledOnoffs[4];
+    const int leds[4] = { 160, 161, 162, 163 };
+	string input;
+	int times = 0;
 	vector<string> values;
 
-	// 讀入字串並分割
+	// 讀入字串併分割
 	input = getenv("QUERY_STRING");
 	values = getValues(input);
-	// 設定LED
-	for (int i = 0; i < 4; ++i) {
-		ledOnoffs[i] == values[i];
-
-		ioExport(leds[i]);
-		ioSetDir(leds[i], "out");
-		if (ledOnoffs[i] == "on")
-			ioSetValue(leds[i], 1);
-		else
-			ioSetValue(leds[i], 0);
-	}
-	// 輸出html
-	cout << "<!DOCTYPE html>"
+    // 設定times
+    times = stoi(values[0]);
+	// 輸出資訊至html
+	cout << "Content-type:text/html\n\n" << endl 
+		<< "<!DOCTYPE html>"
 		<< "<html lang = \"en\">"
 		<< "<head>"
 		<< "<meta charset = \"UTF-8\">"
@@ -65,13 +58,29 @@ int main()
 		<< "<title>Lab3 - Response</title>"
 		<< "</head>"
 		<< "<body>"
-		<< "<h1>輸入資料</h1>"
-		<< "<p>led1: " << ledOnoffs[0] << "</p>"
-		<< "<p>led2: " << ledOnoffs[1] << "</p>"
-		<< "<p>led3: " << ledOnoffs[2] << "</p>"
-		<< "<p>led4: " << ledOnoffs[3] << "</p>"
-		<< "</body>"
+        << "<h1>輸入資料</h1>";
+		<< "<p>閃爍: " << times << "</p>"; 
+        << "</body>"
 		<< "</html>" << endl;
+    // 設定LED
+    for (int i = 0; i < 4; ++i) {
+        ioExport(leds[i]);
+        ioSetDir(leds[i], "out");
+        ioSetValue(leds[i], 0);
+    }
+	// 開始閃爍
+    for (int i = 0; i < times; ++i) {
+        ioSetValue(leds[0], 1);
+		ioSetValue(leds[1], 1);
+		ioSetValue(leds[2], 0);
+		ioSetValue(leds[3], 0);
+        sleep(1);
+		ioSetValue(leds[0], 0);
+		ioSetValue(leds[1], 0);
+		ioSetValue(leds[2], 1);
+		ioSetValue(leds[3], 1);
+        sleep(1);
+    }
 
-	return 0;
+    exit(0);
 }

@@ -36,6 +36,8 @@ int main()
 	string input, dataType, data;
 	vector<string> values;
 
+
+
 	// 讀入字串
 	input = getenv("QUERY_STRING");
 	// 分割字串
@@ -47,7 +49,8 @@ int main()
 		dataType = "姓名";
 	data = values[1];
 	// 輸出html
-	cout << "<!DOCTYPE html>"
+	cout << "Content-type:text/html\n\n"
+		<< "<!DOCTYPE html>"
 		<< "<html lang = \"en\">"
 		<< "<head>"
 		<< "<meta charset = \"UTF-8\">"
@@ -61,5 +64,5 @@ int main()
 		<< "</body>"
 		<< "</html>" << endl;
 
-	return 0;
+    exit(0);
 }
