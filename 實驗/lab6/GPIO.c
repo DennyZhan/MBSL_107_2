@@ -70,7 +70,7 @@ static void export(unsigned int id)
 {
 	char buf[64];
 
-	sprintf(buf, "%d", names[id]);
+	sprintf(buf, "%d", NAMES[id]);
 	write_str("/sys/class/gpio/export", buf);
 }
 
@@ -78,7 +78,7 @@ static void unexport(unsigned int id)
 {
 	char buf[64];
 
-	sprintf(buf, "%d", names[id]);
+	sprintf(buf, "%d", NAMES[id]);
 	write_str("/sys/class/gpio/unexport", buf);
 }
 
@@ -86,7 +86,7 @@ static void set_dir(unsigned int id, const char dir[])
 {
 	char buf[64];
 
-	sprintf(buf, "/sys/class/gpio/gpio%d/direction", names[id]);
+	sprintf(buf, "/sys/class/gpio/gpio%d/direction", NAMES[id]);
 	write_str(buf, dir);
 }
 
@@ -94,7 +94,7 @@ static void set_value(unsigned int id, int value)
 {
 	char buf[64];
 
-	sprintf(buf, "/sys/class/gpio/gpio%d/value", names[id]);
+	sprintf(buf, "/sys/class/gpio/gpio%d/value", NAMES[id]);
 	write_str(buf, (value + '0'));
 }
 
@@ -109,8 +109,12 @@ static ssize_t drv_write(struct file *filp, const char *buf, size_t count, loff_
 	copy_from_user(userStr, buf, 1024);
 	userStr[count - 1] = 0;
 
-	printk("%s\n", userStr);
-	// TODO: 設定GPIO接腳
+	printk("input: %s\n", userStr);
+	char id[4] = "", value[4] = "";
+	sscanf(userStr, "%s %s", id, value);
+	// 設定GPIO接腳
+	set_value(id, value);
+	
 	
 	printk("%s: Leave Write function\n", MODULE_NAME);
 	return count;
@@ -169,7 +173,11 @@ static void exit(void)
 {
 	unregister_chrdev(MAJOR_NUM, MODULE_NAME);
 
-	// TODO: GPIO unexport
+	// GPIO unexport
+	int i = 0;
+	for (i = 0; i < GPIO_NUM; ++i)
+		unexport(i);
+
 
 	printk("%s: Module removed\n", MODULE_NAME);
 }
